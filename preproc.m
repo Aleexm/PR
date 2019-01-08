@@ -6,7 +6,7 @@
 %% Create your dataset for testing here
 % projectionDataset = createProjectionDataset(cleanedImages, labels);
 % profileDataset = createProfileDataset(cleanedImages,labels, 2);
-fisherDataset = selectFisherFeatures(projectionDataset,4);
+% fisherDataset = selectFisherFeatures(projectionDataset,4);
 % fourierDataset = createFourierDataset(cleanedImages,labels);
 % 
 % %% Test classifiers
