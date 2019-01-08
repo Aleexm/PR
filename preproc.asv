@@ -3,22 +3,101 @@
 % [cleanedImages, labels] = preprocess(samplesPerClass); % preprocess images
 % cleanedDataset = prdataset(cleanedImages, labels); % dataset of preprocessed images with labels
 
+%% Create your dataset for testing here
 % projectionDataset = createProjectionDataset(cleanedImages, labels);
-% profileDataset = createProfileDataset(cleanedImaged,labels);
+% profileDataset = createProfileDataset(cleanedImages,labels, 2);
+fisherValues = computeFisherCriteria(projectionDataset,8);
+% fourierDataset = createFourierDataset(cleanedImages,labels);
 % 
 % %% Test classifiers
 % 
 % % use prcrossval(pdigits,[], 10) to perform 10-fold-cross validation to estimate test error
 % 
-[error, errorPerClass] = prcrossval(projectionDataset, svc, 5);
+% [error, errorPerClass] = prcrossval(projectionDataset, svc, 5);
 
-%% Create General Fourier Descriptors
+%% Compute Fisher's Criteria Feature Selection. Call with the feature dataset
+%% as well as the k-largest features you want to select.
+function fisherDataset = computeFisherCriteria(featDataset, k)
+    numOfFeatures = size(featDataset,2); %amount of features
+    numOfObjects = size(featDataset,1); %amount of objects
+    allFisherValues = zeros(numOfFeatures,1); %init array
+    priors = getprior(featDataset,0); %get class priors
+    for featIndex = 1:numOfFeatures %For each feature do
+        %Array containing feature variance according to each class
+        currentFeatureVariancePerClass = zeros(10,1); 
+        % I'm sorry
+        class1feats = [];
+        class2feats = [];
+        class3feats = [];
+        class4feats = [];
+        class5feats = [];
+        class6feats = [];
+        class7feats = [];
+        class8feats = [];
+        class9feats = [];
+        class10feats = [];
+        for objectIndex = 1:numOfObjects % Loop over all objects for this feat
+            label = featDataset.nlab(objectIndex); %get label
+            if label == 1
+                class1feats = [class1feats,featDataset.data(objectIndex,featIndex)];
+            elseif label == 2
+                class2feats = [class2feats,featDataset.data(objectIndex,featIndex)];
+            elseif label == 3
+                class3feats = [class3feats,featDataset.data(objectIndex,featIndex)];
+            elseif label == 4
+                class4feats = [class4feats,featDataset.data(objectIndex,featIndex)];
+            elseif label == 5
+                class5feats = [class5feats,featDataset.data(objectIndex,featIndex)];
+            elseif label == 6
+                class6feats = [class6feats,featDataset.data(objectIndex,featIndex)];                
+            elseif label == 7
+                class7feats = [class7feats,featDataset.data(objectIndex,featIndex)];
+            elseif label == 8
+                class8feats = [class8feats,featDataset.data(objectIndex,featIndex)];
+            elseif label == 9
+                class9feats = [class9feats,featDataset.data(objectIndex,featIndex)];
+            else
+                class10feats = [class10feats,featDataset.data(objectIndex,featIndex)];
+            end
+        end
+        currentFeatureVariancePerClass(1) = var(class1feats);
+        currentFeatureVariancePerClass(2) = var(class2feats);
+        currentFeatureVariancePerClass(3) = var(class3feats);
+        currentFeatureVariancePerClass(4) = var(class4feats);
+        currentFeatureVariancePerClass(5) = var(class5feats);
+        currentFeatureVariancePerClass(6) = var(class6feats);
+        currentFeatureVariancePerClass(7) = var(class7feats);
+        currentFeatureVariancePerClass(8) = var(class8feats);
+        currentFeatureVariancePerClass(9) = var(class9feats);
+        currentFeatureVariancePerClass(10) = var(class10feats);
+        
+        %compute Fisher's value for this feature
+        sum = 0;
+        for classIndex = 1:10
+            sum = sum + priors(classIndex) * ...
+                currentFeatureVariancePerClass(classIndex);
+        end
+        allFisherValues(featIndex) = 1/sum;
+    end
+    [fisherValues,index] = maxk(allFisherValues,k);
+    
+
+end
+%% Create General Fourier Descriptors (does not work correctly yet)
 function fourierDataset = createFourierDataset(cleanedImages, labels)
      noOfImgs = size(cleanedImages,1); % Get number of images
      fourierDataset = zeros(noOfImgs,52);
      for imageIndex = 1:noOfImgs
-         image = cleanedImages(imageIndex, :);
-         
+         data = cleanedImages(imageIndex, :);
+         image = zeros(128,128);
+         for row = 1:128
+             for col = 1:128
+             image(row,col) = data((col-1)*128+row);  
+             end
+         end
+         logicalImage = imbinarize(image);
+         centeredImage = centerobject(logicalImage);
+         fourierDataset(imageIndex, 1:52) = gfd(centeredImage,3,12);
      end
 end
 
@@ -56,20 +135,21 @@ function projectionDataset = createProjectionDataset(cleanedImages, labels)
 end
 
 %% Create profiles features
-function profileDataset = createProfileDataset(cleanedImages, labels)
+% numBins must be either: 1, 2, 4, 8, 16, 32, 64, 128
+function profileDataset = createProfileDataset(cleanedImages, labels, numBins)
     profiles = [];
-
     for imageIndex = 1:size(cleanedImages, 1) % for each image
         profilePerImage = [];
         image = cleanedImages(imageIndex, :);
         imageDim = sqrt(length(image));
-        for bin = 0:9 % for each bin at the top of the image
+        partialNum = imageDim / numBins;
+        for bin = 0:(numBins - 1) % for each bin at the top of the image
             sum = 0; % sum of pixels
-            for col = 1:13 %for each column
-                i = bin * 13 + col; % actual column index
+            for col = 1:partialNum %for each column
+                i = bin * partialNum + col; % actual column index
                 row = 0; % row number
                 pixel = row * imageDim + i;
-                while row < imageDim && image(pixel) ~= 1 %while no white pixel is encountered
+                while row < imageDim && image(pixel) ~= 1 % while no white pixel is encountered
                     sum = sum + 1;
                     row = row + 1;
                     pixel = row * imageDim + i;
@@ -77,10 +157,10 @@ function profileDataset = createProfileDataset(cleanedImages, labels)
             end
             profilePerImage = [profilePerImage, sum];
         end
-        for bin = 0:9 % for each bin at the bottom of the image
+        for bin = 0:(numBins - 1) % for each bin at the bottom of the image
             sum = 0; % sum of pixels
-            for col = 1:13 %for each column
-                i = bin * 13 + col; % actual column index
+            for col = 1:partialNum %for each column
+                i = bin * partialNum + col; % actual column index
                 row = imageDim - 1; % row number
                 pixel = row * imageDim + i;
                 while row >= 0 && image(pixel) ~= 1  %while no white pixel is encountered
@@ -91,10 +171,10 @@ function profileDataset = createProfileDataset(cleanedImages, labels)
             end
             profilePerImage = [profilePerImage, sum];
         end
-        for bin = 0:9 % for each bin at the left of the image
+        for bin = 0: (numBins - 1) % for each bin at the left of the image
             sum = 0; % sum of pixels
-            for row = 1:13 %for each row
-                i = bin * 13 + row; % actual row index
+            for row = 1:partialNum %for each row
+                i = bin * partialNum + row; % actual row index
                 col = 1; % column number
                 pixel = (i - 1) * imageDim + col;
                 while col <= imageDim && image(pixel) ~= 1  %while no white pixel is encountered
@@ -105,10 +185,10 @@ function profileDataset = createProfileDataset(cleanedImages, labels)
             end
             profilePerImage = [profilePerImage, sum];
         end
-        for bin = 0:9 % for each bin at the right of the image
+        for bin = 0: (numBins - 1) % for each bin at the right of the image
             sum = 0; % sum of pixels
-            for row = 1:13 %for each row
-                i = bin * 13 + row; % actual row index
+            for row = 1:partialNum %for each row
+                i = bin * partialNum + row; % actual row index
                 col = imageDim; % column number
                 pixel = (i - 1) * imageDim + col;
                 while col >= 1 && image(pixel) ~= 1  %while no white pixel is encountered
