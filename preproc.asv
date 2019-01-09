@@ -6,10 +6,8 @@
 %% Create your dataset for testing here
 %projectionDataset = createProjectionDataset(cleanedImages, labels);
 % profileDataset = createProfileDataset(cleanedImages,labels, 2);
-% % I split this functionality up so you don't have to recompute all
-% fisherValues when you want to select different top k features.
-% allFisherValues = computeFisherValues(projectionDataset);
-fisherDataset = getFisherDataset(allFisherValues,projectionDataset,153);
+allFisherValues = getFisherDataset(projectionDataset,5);
+fisherDataset = getFisherDataset(allFisherValues,projectionD
 % fourierDataset = createFourierDataset(cleanedImages,labels);
 
 %% Test classifiers
@@ -17,7 +15,7 @@ fisherDataset = getFisherDataset(allFisherValues,projectionDataset,153);
 data = fisherDataset;
 % Test
 [errorNMC, errorNMCPerClass] = prcrossval(data, nmc, 5);
-[errorLDC, errorLDCPerClass] = prcrossval(data, ldc, 5);
+[errorLDC, errorLDCPerClass] = prcrossv0.al(data, ldc, 5);
 [errorQDC, errorQDCPerClass] = prcrossval(data, qdc, 5);
 [errorFISHERC, errorFISHERCPerClass] = prcrossval(data, fisherc, 5);
 [errorLOGLC, errorLOGLCPerClass] = prcrossval(data, loglc, 5);
@@ -33,9 +31,8 @@ data = fisherDataset;
 %[errorSVMLIN, errorSVMLINPerClass] = prcrossval(data, svc, 5);
 %[errorSVMRBF, errorSVMRBFPerClass] = prcrossval(data, svc([],proxm('r',1)), 5);
 
-%% Compute Fisher's Criteria Feature Values. Call with the feature dataset
-%% Be sure to call getFisherDataset after to get the actual dataset
-%% (Functionality split so you don't have to compute all values again for different k)
+%% Compute Fisher's Criteria Feature Selection. Call with the feature dataset
+%% as well as the k-largest features you want to select.
 function allFisherValues = computeFisherValues(featDataset)
     numOfFeatures = size(featDataset,2); %amount of features
     numOfObjects = size(featDataset,1); %amount of objects
@@ -100,8 +97,6 @@ function allFisherValues = computeFisherValues(featDataset)
     end
 end
 
-%% Get the actual dataset. Call with the values computed in computeFisherValues
-%% as well as the feature dataset and the top k features selected
 function fisherDataset = getFisherDataset(fisherValues, featDataset, k)
     % Get index of maximum fishervalues
     [maxFisherValues,index] = maxk(fisherValues,k);
