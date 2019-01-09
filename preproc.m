@@ -4,16 +4,31 @@
 % cleanedDataset = prdataset(cleanedImages, labels); % dataset of preprocessed images with labels
 
 %% Create your dataset for testing here
-% projectionDataset = createProjectionDataset(cleanedImages, labels);
+projectionDataset = createProjectionDataset(cleanedImages, labels);
 % profileDataset = createProfileDataset(cleanedImages,labels, 2);
 % fisherDataset = selectFisherFeatures(projectionDataset,4);
 % fourierDataset = createFourierDataset(cleanedImages,labels);
-% 
-% %% Test classifiers
-% 
-% % use prcrossval(pdigits,[], 10) to perform 10-fold-cross validation to estimate test error
-% 
-% [error, errorPerClass] = prcrossval(projectionDataset, svc, 5);
+
+%% Test classifiers
+% Set data parameter here
+data = projectionDataset;
+% Test
+[errorNMC, errorNMCPerClass] = prcrossval(data, nmc, 5);
+[errorLDC, errorLDCPerClass] = prcrossval(data, ldc, 5);
+[errorQDC, errorQDCPerClass] = prcrossval(data, qdc, 5);
+[errorFISHERC, errorFISHERCPerClass] = prcrossval(data, fisherc, 5);
+[errorLOGLC, errorLOGLCPerClass] = prcrossval(data, loglc, 5);
+[errorKNNC1, errorKNNC1PerClass] = prcrossval(data, knnc([],1), 5);
+[errorKNNC3, errorKNNC3PerClass] = prcrossval(data, knnc([],3), 5);
+[errorKNNC5, errorKNNC5PerClass] = prcrossval(data, knnc([],5), 5);
+[errorKNNC7, errorKNNC7PerClass] = prcrossval(data, knnc([], 7), 5);
+[errorKNNC9, errorKNNC9PerClass] = prcrossval(data, knnc([],9), 5);
+[errorKNNC11, errorKNNC11PerClass] = prcrossval(data, knnc([],11), 5);
+[errorPARZENC, errorPARZENCPerClass] = prcrossval(data, parzenc, 5);
+% Commented out because I ran out of memory. Might need to test these
+% seperately
+%[errorSVMLIN, errorSVMLINPerClass] = prcrossval(data, svc, 5);
+%[errorSVMRBF, errorSVMRBFPerClass] = prcrossval(data, svc([],proxm('r',1)), 5);
 
 %% Compute Fisher's Criteria Feature Selection. Call with the feature dataset
 %% as well as the k-largest features you want to select.
@@ -82,7 +97,6 @@ function fisherDataset = selectFisherFeatures(featDataset, k)
     % Get index of maximum fishervalues
     [fisherValues,index] = maxk(allFisherValues,k);
     %Subset featuredataset by selecting only top k features
-    % (params: A, object subset, feature subset, some other random thing)
     fisherDataset = seldat(featDataset,[],index,[]);
 end
 
