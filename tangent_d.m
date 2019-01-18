@@ -1,25 +1,6 @@
-function d = tangent_d(A, B, ~)
+% Based on Daniel Keysers code 
 
-% Modified to return Tangent distance (in place of L2)
-%-----------------------------------------------------
-% tangent_d - computes tangent distance matrix
-%
-% E = L2_distance(A,B)
-%
-%    A - (DxM) matrix 
-%    B - (DxN) matrix
-% 
-% Returns:
-%    E - (MxN) tangent distances between vectors in A and B
-%
-% 
-%
-% Example : 
-%    A = rand(400,100); B = rand(400,200);
-%    d = tangent_d(A,B);
-%
-%
-  
+function d = tangent_d(A, B, ~)
 
 if (nargin < 2)
    error('Not enough input arguments');
