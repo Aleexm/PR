@@ -13,7 +13,7 @@ end
 
 crossDataset = prdataset(double(crossFeats), digitLabels);
 
-models = {nmc, ldc, qdc, fisherc, loglc, parzenc, knnc([], 1), knnc([], 3), ...
+models = {nmc, ldc([], 0.01), qdc([], 0.01), fisherc, loglc, parzenc, knnc([], 1), knnc([], 3), ...
           knnc([], 5), knnc([], 7), knnc([], 9), knnc([], 11), ...
           svc([], proxm('p',1)), svc([], proxm('r', 1)), neurc};
 
@@ -29,7 +29,7 @@ for featExtractIndex = 1:size(featExtractFuncs, 2)
     if featExtractIndex == 1
         mapping = 1;
     else
-        mapping = featExtractFuncs{featExtractIndex};
+        mapping = scalem([], 'variance') * featExtractFuncs{featExtractIndex};
     end
     
     for modelIndex = 1: size(models, 2)
