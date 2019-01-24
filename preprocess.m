@@ -11,9 +11,11 @@ function [cleanedImages, digitLabels] = preprocess(samplesPerClass, imageSize)
             i = classIndex * samplesPerClass + imageIndex; 
             im = data2im(original_digits(i));
             
+            %{
             if imageIndex == randomIndex
                 imwrite(im, sprintf('output\\%s_%d.jpg',"orig",classIndex));
             end
+            %}
         
             se = strel('disk',1);
             im = imclose(im, se);
@@ -24,9 +26,11 @@ function [cleanedImages, digitLabels] = preprocess(samplesPerClass, imageSize)
             im = im_resize(im, [imageSize - 2,imageSize - 2]);
             im = im_box(im, 1, 0);
             
+            %{
             if imageIndex == randomIndex
                 imwrite(im, sprintf('output\\%s_%d.jpg',"proc",classIndex));
             end
+            %}
                 
             cleanedImages = [cleanedImages; reshape(im, 1, [])]; 
             digitLabels = [digitLabels; num2str(classIndex)]; 

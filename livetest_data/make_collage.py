@@ -15,13 +15,15 @@ if __name__ == "__main__":
 
 	rows, columns = 5, 4
 	for i in range(0, columns*rows):
-		crt_filename = ("orig_" if i % 2 == 0 else "proc_") + str(i // 2) + ".jpg"
+		crt_filename = ("digit" if i % 2 == 0 else "pdigit") + str(i // 2) + ".jpg"
 		crt_filename = os.path.join("selected", crt_filename)
-		img = cv2.imread(crt_filename, cv2.IMREAD_GRAYSCALE)
+		print(crt_filename)
+		# cv2.IMREAD_GRAYSCALE
+		img = cv2.imread(crt_filename)
 		fig.add_subplot(rows, columns, i + 1)
 		plt.axis('off')
 		plt.title("Before" if i % 2 == 0 else "After", fontsize=12)
 		plt.imshow(img, cmap = 'gray')
 	
-	plt.savefig("before_after_preproc.jpg")
+	plt.savefig("livetest_before_after_preproc.jpg")
 	plt.close()
