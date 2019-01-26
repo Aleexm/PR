@@ -14,15 +14,15 @@ for samplesPerClass=4:10
     hogDataset = my_rep(nistDatafile);
     hogDataset = hogDataset(randperm(size(hogDataset, 1)), :);
     crt_result = [samplesPerClass];
-    for methodIndex=1: size(final_models, 2)
-    	combiningMethod = combiningMethods(methodIndex)
-    	combiningMethod = combiningMethod{1}
-    	untrainedModel = finalModels * combiningMethod
-    	trainedModel = hogDataset * untrainedModel
+    for methodIndex=1: size(combiningMethods, 2)
+    	combiningMethod = combiningMethods(methodIndex);
+    	combiningMethod = combiningMethod{1};
+    	untrainedModel = finalModels * combiningMethod;
+    	trainedModel = hogDataset * untrainedModel;
     	crt_err = nist_eval('my_rep', trainedModel, 100);
         crt_result = [crt_result, crt_err];
     end
-    cell2csv('scenario2_results.csv', string(crt_result));
+    cell2csv('scenario2_results_comb.csv', string(crt_result));
 end
 
 

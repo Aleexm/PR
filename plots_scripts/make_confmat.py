@@ -79,15 +79,15 @@ def plot_confusion_matrix(cm,
                      color="white" if cm[i, j] > thresh else "black")
 
     plt.ylabel('True label')
-    plt.xlabel('Predicted label\naccuracy={:0.3f}; misclass={:0.3f}'.format(accuracy, misclass))
+    plt.xlabel('Predicted label\naccuracy={:0.4f}; misclass={:0.4f}'.format(accuracy, misclass))
     
     plt.savefig(plt_filename)
     plt.close()
 
-y_true = pd.read_csv("y_true.csv", header = None, names = ['labels'])
-y_pred = pd.read_csv("y_pred.csv", header = None, names = ['labels'])
+y_true = pd.read_csv("s2_y_true.csv", header = None, names = ['labels'])
+y_pred = pd.read_csv("s2_y_pred.csv", header = None, names = ['labels'])
 
 cmat = confusion_matrix(y_true, y_pred)
-plot_confusion_matrix(cmat, [str(i) for i in range(10)], "cmat.jpg", 
-	normalize = False, title = "Confusion matrix for Scenario 1 using best HOG features classifier")
+plot_confusion_matrix(cmat, [str(i) for i in range(10)], "s2_cmat.jpg", 
+	normalize = False, title = "Confusion matrix for Scenario 2 using final stacked ProdC HOG features combiner")
 
