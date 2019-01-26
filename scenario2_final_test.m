@@ -10,6 +10,7 @@ cell2csv('scenario2_results.csv', resultsHeader);
 for samplesPerClass=4:10
     nistDatafile = prnist([0:9], [1:samplesPerClass]);
     hogDataset = my_rep(nistDatafile);
+    hogDataset = hogDataset(randperm(size(hogDataset, 1)), :);
     crt_result = [samplesPerClass];
     for modelIndex = 1: size(final_models, 2)
         untrainedModel = final_models(modelIndex);
