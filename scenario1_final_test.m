@@ -6,7 +6,7 @@ final_models = {scalem([], 'variance') * pcam([], 0.95) * parzenc, ...
 
 resultsHeader = ["samples_per_class", "95PCA_PARZEN", "90PCA_PARZEN", ...
     "80PCA_PARZEN", "70PCA_PARZEN", "60PCA_PARZEN"]; 
-cell2csv('scenario1_results.csv', resultsHeader);
+cell2csv(strcat('plots_scripts/results/', 'scenario1_results.csv'), resultsHeader);
 for samplesPerClass=200:25:400
     nistDatafile = prnist([0:9], [1:samplesPerClass]);
     hogDataset = my_rep(nistDatafile);
@@ -20,5 +20,5 @@ for samplesPerClass=200:25:400
         crt_err = nist_eval('my_rep', trainedModel, 100);
         crt_result = [crt_result, crt_err];
     end
-    cell2csv('scenario1_results.csv', string(crt_result));
+    cell2csv(strcat('plots_scripts/results/', 'scenario1_results.csv'), string(crt_result));
 end

@@ -43,7 +43,9 @@ def make_trainsize_err_plot(results_filename, plt_filename,  plt_title):
 	plt.close()
 
 if __name__ == "__main__":
-	make_trainsize_err_plot("scenario1_results.csv", "scenario1_hog.jpg", 
+	make_trainsize_err_plot(os.path.join("results", "scenario1_results.csv"), 
+		os.path.join("output", "scenario1_hog.jpg"), 
 		"Test results using best HOG features classifier for Scenario 1")
-	make_trainsize_err_plot("scenario2_results.csv", "scenario2_hog.jpg", 
+	make_trainsize_err_plot(os.path.join("results", "scenario2_results.csv"), 
+		os.path.join("output", "scenario2_hog.jpg"), 
 		"Test results using best HOG features classifier for Scenario 2")

@@ -56,17 +56,17 @@ def make_dim_err_plot(results_filename, target_err, plt_filename,  plt_title):
 
 if __name__ == "__main__":
 
-	results_dir = "results_to_plot" 
+	results_dir = "results" 
 
-	make_dim_err_plot(os.path.join(results_dir, "10fold_err_pixels_pca_128_scenario2.csv"),
-		0.25, "10fold_err_pixels_pca_128_scenario2.jpg", 
+	make_dim_err_plot(os.path.join("results", "10fold_err_pixels_pca_128_scenario2.csv"),
+		0.25, os.path.join("output", "10fold_err_pixels_pca_128_scenario2.jpg"), 
 		"LOO Error for PCA for the pixel representation based on 128x128 images")
-	make_dim_err_plot(os.path.join(results_dir, "10fold_err_pixels_pca_32_scenario2.csv"),
-		0.25, "10fold_err_pixels_pca_32_scenario2.jpg", 
+	make_dim_err_plot(os.path.join("results", "10fold_err_pixels_pca_32_scenario2.csv"),
+		0.25, os.path.join("output", "10fold_err_pixels_pca_32_scenario2.jpg"), 
 		"LOO Error for PCA for the pixel representation based on 32x32 images")
-	make_dim_err_plot(os.path.join(results_dir, "5fold_err_pixels_pca_128_scenario1.csv"),
-		0.05, "5fold_err_pixels_pca_128_scenario1.jpg", 
+	make_dim_err_plot(os.path.join("results", "5fold_err_pixels_pca_128_scenario1.csv"),
+		0.05, os.path.join("output", "5fold_err_pixels_pca_128_scenario1.jpg"), 
 		"5-fold cross validation error for PCA for the pixel representation based on 128x128 images")
-	make_dim_err_plot(os.path.join(results_dir, "5fold_err_pixels_pca_32_scenario1.csv"),
-		0.05, "5fold_err_pixels_pca_32_scenario1.jpg", 
+	make_dim_err_plot(os.path.join("results", "5fold_err_pixels_pca_32_scenario1.csv"),
+		0.05, os.path.join("output", "5fold_err_pixels_pca_32_scenario1.jpg"), 
 		"5-fold cross validation error for PCA for the pixel representation based on 32x32 images")

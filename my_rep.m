@@ -28,12 +28,3 @@ function hogDataset = my_rep(nistDatafile)
     hogDataset = prdataset(double(hogFeats), digitLabels);
             
 end
-
-
-
-
-
-
-
-
-

@@ -6,7 +6,7 @@ finalModels = [scalem([], 'variance') * pcam([], 0.9) * parzenc, ...
 combiningMethods = {meanc, prodc, minc, maxc};
 
 resultsHeader = ["samples_per_class", "MeanC", "ProdC", "MinC", "MaxC"]; 
-cell2csv('scenario1_results_comb.csv', resultsHeader);
+cell2csv(strcat('plots_scripts/results/', 'scenario1_results_comb.csv'), resultsHeader);
 for samplesPerClass=200:25:400
 	nistDatafile = prnist([0:9], [1:samplesPerClass]);
     hogDataset = my_rep(nistDatafile);
@@ -20,5 +20,5 @@ for samplesPerClass=200:25:400
     	crt_err = nist_eval('my_rep', trainedModel, 100);
         crt_result = [crt_result, crt_err];
     end
-    cell2csv('scenario1_results_comb.csv', string(crt_result));
+    cell2csv(strcat('plots_scripts/results/', 'scenario1_results_comb.csv'), string(crt_result));
 end

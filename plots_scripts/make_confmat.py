@@ -1,8 +1,10 @@
-from sklearn.metrics import confusion_matrix
 import matplotlib
 matplotlib.use("TkAgg")
+
+from sklearn.metrics import confusion_matrix
 import pandas as pd
 import numpy
+import os
 
 
 def plot_confusion_matrix(cm,
@@ -11,7 +13,7 @@ def plot_confusion_matrix(cm,
                           title='Confusion matrix',
                           cmap=None,
                           normalize=True):
-    """
+  """
     given a sklearn confusion matrix (cm), make a nice plot
 
     Arguments
@@ -42,52 +44,56 @@ def plot_confusion_matrix(cm,
     ---------
     http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
 
-    """
-    import matplotlib.pyplot as plt
-    import numpy as np
-    import itertools
+  """
+  import matplotlib.pyplot as plt
+  import numpy as np
+  import itertools
 
-    accuracy = np.trace(cm) / float(np.sum(cm))
-    misclass = 1 - accuracy
+  accuracy = np.trace(cm) / float(np.sum(cm))
+  misclass = 1 - accuracy
 
-    if cmap is None:
-        cmap = plt.get_cmap('Blues')
+  if cmap is None:
+    cmap = plt.get_cmap('Blues')
 
-    plt.figure(figsize=(8, 6))
-    plt.imshow(cm, interpolation='nearest', cmap=cmap)
-    plt.title(title)
-    plt.colorbar()
+  plt.figure(figsize=(8, 6))
+  plt.imshow(cm, interpolation='nearest', cmap=cmap)
+  plt.title(title)
+  plt.colorbar()
 
-    if target_names is not None:
-        tick_marks = np.arange(len(target_names))
-        plt.xticks(tick_marks, target_names, rotation=45)
-        plt.yticks(tick_marks, target_names)
+  if target_names is not None:
+    tick_marks = np.arange(len(target_names))
+    plt.xticks(tick_marks, target_names, rotation=45)
+    plt.yticks(tick_marks, target_names)
 
+  if normalize:
+    cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
+
+  thresh = cm.max() / 1.5 if normalize else cm.max() / 2
+  for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
     if normalize:
-        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+      plt.text(j, i, "{:0.2f}".format(cm[i, j]),
+              horizontalalignment="center",
+              color="white" if cm[i, j] > thresh else "black")
+    else:
+      plt.text(j, i, "{:,}".format(cm[i, j]),
+              horizontalalignment="center",
+              color="white" if cm[i, j] > thresh else "black")
 
-
-    thresh = cm.max() / 1.5 if normalize else cm.max() / 2
-    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-        if normalize:
-            plt.text(j, i, "{:0.2f}".format(cm[i, j]),
-                     horizontalalignment="center",
-                     color="white" if cm[i, j] > thresh else "black")
-        else:
-            plt.text(j, i, "{:,}".format(cm[i, j]),
-                     horizontalalignment="center",
-                     color="white" if cm[i, j] > thresh else "black")
-
-    plt.ylabel('True label')
-    plt.xlabel('Predicted label\naccuracy={:0.4f}; misclass={:0.4f}'.format(accuracy, misclass))
+  plt.ylabel('True label')
+  plt.xlabel('Predicted label\naccuracy={:0.4f}; misclass={:0.4f}'.format(accuracy, misclass))
     
-    plt.savefig(plt_filename)
-    plt.close()
+  plt.savefig(plt_filename)
+  plt.close()
 
-y_true = pd.read_csv("s2_y_true.csv", header = None, names = ['labels'])
-y_pred = pd.read_csv("s2_y_pred.csv", header = None, names = ['labels'])
+if __name__ == "__main__":
+  y_true = pd.read_csv(os.path.join("results", "s1_y_true_all.csv"), 
+    header = None, names = ['labels'])
+  y_pred = pd.read_csv(os.path.join("results","s1_y_pred_all.csv"), 
+    header = None, names = ['labels'])
 
-cmat = confusion_matrix(y_true, y_pred)
-plot_confusion_matrix(cmat, [str(i) for i in range(10)], "s2_cmat.jpg", 
-	normalize = False, title = "Confusion matrix for Scenario 2 using final stacked ProdC HOG features combiner")
+  cmat = confusion_matrix(y_true, y_pred)
+  plot_confusion_matrix(cmat, [str(i) for i in range(10)], 
+    os.path.join("output", "s1_cmat_all.jpg"), normalize = False, 
+    title = "Confusion matrix for final ProdC HOG features combiner train/test split of 900/100")
 
