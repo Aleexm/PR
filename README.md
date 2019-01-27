@@ -7,7 +7,14 @@ Team members:
  * [Nele Albers](https://www.tudelft.nl/ewi/)
  * [Alex Mandersloot](https://www.tudelft.nl/ewi/)
  
- # Environment 
+ ## Data
+ 
+The standard dataset of handwritten digits is put together by the [US National Institute of Standards & Technology,
+NIST](http://www.nist.gov/).
+
+Our own handwritten digits can be found on this reposotory in a directory named `livetest_data`.
+ 
+ ## Environment 
  
 Handwritten digits classification part implemented using [PRTools](http://prtools.tudelft.nl/) Matlab toolbox.
 
