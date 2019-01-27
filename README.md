@@ -10,6 +10,7 @@ Team members:
  # Environment 
  
 Handwritten digits classification part implemented using [PRTools](http://prtools.tudelft.nl/) Matlab toolbox.
+
 Generating multiple plots, confusion matrixes and other visualization elements like digits photo collage using an [Anaconda](https://www.anaconda.com/download/) *python 3.5* Windows environment.
 
 
