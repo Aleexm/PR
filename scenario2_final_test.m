@@ -1,4 +1,4 @@
-final_models = {knnc([], 1), scalem([], 'variance') * pcam([], 0.95) * knnc([], 1), ...
+finalModels = {knnc([], 1), scalem([], 'variance') * pcam([], 0.95) * knnc([], 1), ...
     scalem([], 'variance') * pcam([], 0.9) * knnc([], 1), ...
     scalem([], 'variance') * pcam([], 0.8) * knnc([], 1), ...
     scalem([], 'variance') * pcam([], 0.7) * knnc([], 1), ...
@@ -12,8 +12,8 @@ for samplesPerClass=4:10
     hogDataset = my_rep(nistDatafile);
     hogDataset = hogDataset(randperm(size(hogDataset, 1)), :);
     crt_result = [samplesPerClass];
-    for modelIndex = 1: size(final_models, 2)
-        untrainedModel = final_models(modelIndex);
+    for modelIndex = 1: size(finalModels, 2)
+        untrainedModel = finalModels(modelIndex);
         untrainedModel = untrainedModel{1};
         trainedModel = hogDataset * untrainedModel;
         

@@ -5,7 +5,7 @@ hogDataset = my_rep(nistDatafile);
 
 randIndexes = randperm(samplesPerClass);
 trainIndexes = [];
-for i=1:900
+for i=1:800
     for digit=0:9
         trainIndexes = [trainIndexes, randIndexes(i) + samplesPerClass * digit];
     end
@@ -19,7 +19,6 @@ testDataset = hogDataset(testIndexes, :);
 finalModel = [scalem([], 'variance') * pcam([], 0.9) * parzenc, ...
     scalem([], 'variance') * pcam([], 0.9) * knnc([], 1), ...
     scalem([], 'variance') * pcam([], 0.95) * knnc([], 3)] * prodc;
-
 
 %{
 finalModel = [scalem([], 'variance') * pcam([], 0.95) * knnc([], 1), ...

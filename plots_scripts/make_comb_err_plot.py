@@ -26,7 +26,7 @@ def make_comb_err_plot(results_filename, plt_filename,  plt_title):
   colors = ['orange', 'blue', 'red', 'navy', 'violet', 'maroon']
   for i, comb_name in enumerate(comb_methods):
     crt_y = df[comb_name].values
-    plt.plot(x, crt_y, linestyle='--', marker='o', color = colors[i])
+    plt.plot(x, crt_y, linestyle='None', marker='o', color = colors[i])
 
   plt.xticks(x, plt_xticks)
   
@@ -51,4 +51,11 @@ if __name__ == "__main__":
     "Test results using multiple stacked HOG features combining methods of non-linear and linear classifiers for Scenario 1")
   make_comb_err_plot(os.path.join("results", "scenario2_results_comb.csv"), 
     os.path.join("output", "scenario2_hog_comb.jpg"), 
-    "Test results using multiple stacked HOG features combining methods for Scenario 2")
+    "Test results using multiple HOG features combining methods for Scenario 2")
+
+  make_comb_err_plot(os.path.join("results", "scenario1_results_train_comb.csv"), 
+    os.path.join("output", "scenario1_hog_comb_train.jpg"), 
+    "Classification error on Scenario 1 for combining HOG classifiers with different methods")  
+  make_comb_err_plot(os.path.join("results", "scenario2_results_train_comb.csv"), 
+    os.path.join("output", "scenario2_hog_comb_train.jpg"), 
+    "Classification error on Scenario 2 for combining HOG classifiers with different methods")

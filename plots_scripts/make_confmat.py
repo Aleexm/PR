@@ -87,13 +87,48 @@ def plot_confusion_matrix(cm,
   plt.close()
 
 if __name__ == "__main__":
+  y_true = pd.read_csv(os.path.join("results", "s1_y_true.csv"), 
+    header = None, names = ['labels'])
+  y_pred = pd.read_csv(os.path.join("results","s1_y_pred.csv"), 
+    header = None, names = ['labels'])
+  cmat = confusion_matrix(y_true, y_pred)
+  plot_confusion_matrix(cmat, [str(i) for i in range(10)], 
+    os.path.join("output", "s1_cmat.jpg"), normalize = False, 
+    title = "Confusion matrix for Scenario 1 using final ProdC HOG features combiner")
+
+  y_true = pd.read_csv(os.path.join("results", "s2_y_true.csv"), 
+    header = None, names = ['labels'])
+  y_pred = pd.read_csv(os.path.join("results","s2_y_pred.csv"), 
+    header = None, names = ['labels'])
+  cmat = confusion_matrix(y_true, y_pred)
+  plot_confusion_matrix(cmat, [str(i) for i in range(10)], 
+    os.path.join("output", "s2_cmat.jpg"), normalize = False, 
+    title = "Confusion matrix for Scenario 2 using final ProdC HOG features combiner")
+
   y_true = pd.read_csv(os.path.join("results", "s1_y_true_all.csv"), 
     header = None, names = ['labels'])
   y_pred = pd.read_csv(os.path.join("results","s1_y_pred_all.csv"), 
-    header = None, names = ['labels'])
-
+    header = None, names = ['labels'])  
   cmat = confusion_matrix(y_true, y_pred)
   plot_confusion_matrix(cmat, [str(i) for i in range(10)], 
     os.path.join("output", "s1_cmat_all.jpg"), normalize = False, 
     title = "Confusion matrix for final ProdC HOG features combiner train/test split of 900/100")
+
+  y_true = pd.read_csv(os.path.join("results", "s1_y_true_live.csv"), 
+    header = None, names = ['labels'])
+  y_pred = pd.read_csv(os.path.join("results","s1_y_pred_live.csv"), 
+    header = None, names = ['labels'])  
+  cmat = confusion_matrix(y_true, y_pred)
+  plot_confusion_matrix(cmat, [str(i) for i in range(10)], 
+    os.path.join("output", "s1_cmat_live.jpg"), normalize = False, 
+    title = "Confusion matrix for live testing using Scenario 1 best classifier")
+
+  y_true = pd.read_csv(os.path.join("results", "s2_y_true_live.csv"), 
+    header = None, names = ['labels'])
+  y_pred = pd.read_csv(os.path.join("results","s2_y_pred_live.csv"), 
+    header = None, names = ['labels'])  
+  cmat = confusion_matrix(y_true, y_pred)
+  plot_confusion_matrix(cmat, [str(i) for i in range(10)], 
+    os.path.join("output", "s2_cmat_live.jpg"), normalize = False, 
+    title = "Confusion matrix for live testing using Scenario 2 best classifier")
 

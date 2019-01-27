@@ -13,7 +13,6 @@ end
 
 hogDataset = prdataset(double(hogFeats), digitLabels);
 
-%{
 
 models = {nmc, ldc([], 0.01), qdc([], 0.01), fisherc, loglc, parzenc, knnc([], 1), knnc([], 3), ...
           knnc([], 5), knnc([], 7), knnc([], 9), knnc([], 11), ...
@@ -50,7 +49,6 @@ for featExtractIndex = 1:size(featExtractFuncs, 2)
     end
 end
 
-%}
 
 
 

@@ -19,6 +19,7 @@ for samplesPerClass=4:10
     	combiningMethod = combiningMethod{1};
     	untrainedModel = finalModels * combiningMethod;
     	trainedModel = hogDataset * untrainedModel;
+        
     	crt_err = nist_eval('my_rep', trainedModel, 100);
         crt_result = [crt_result, crt_err];
     end

@@ -25,6 +25,5 @@ function hogDataset = my_rep(nistDatafile)
         disp(classIndex);
     end
     
-    hogDataset = prdataset(double(hogFeats), digitLabels);
-            
+    hogDataset = prdataset(double(hogFeats), digitLabels);        
 end

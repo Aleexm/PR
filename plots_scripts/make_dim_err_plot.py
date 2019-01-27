@@ -21,7 +21,7 @@ def make_dim_err_plot(results_filename, target_err, plt_filename,  plt_title):
 	assert x.shape[0] == len(plt_xticks)
 
 	sns.set()
-	fig = plt.figure(figsize=(9, 7))
+	fig = plt.figure(figsize=(10, 10))
 	ax  = plt.subplot(111)
 
 	colors = ['orange', 'blue', 'red', 'yellow', 'navy', 'maroon', 'violet']
@@ -55,8 +55,6 @@ def make_dim_err_plot(results_filename, target_err, plt_filename,  plt_title):
 
 
 if __name__ == "__main__":
-
-	results_dir = "results" 
 
 	make_dim_err_plot(os.path.join("results", "10fold_err_pixels_pca_128_scenario2.csv"),
 		0.25, os.path.join("output", "10fold_err_pixels_pca_128_scenario2.jpg"), 

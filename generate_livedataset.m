@@ -2,6 +2,7 @@ function [cleanedImages, digitLabels] = generate_livedataset(imageSize)
 
     cleanedImages = [];
     digitLabels = [];
+
     for digit=0:9
         for index=1:10
             crt_img = imread(sprintf('livetest_data\\digit%d-%d.jpg',digit, index));
@@ -21,7 +22,8 @@ function [cleanedImages, digitLabels] = generate_livedataset(imageSize)
             imwrite(crt_img, sprintf('livetest_data\\pdigit%d-%d.jpg',digit, index));
             
         cleanedImages = [cleanedImages; reshape(crt_img, 1, [])]; 
-        digitLabels = [digitLabels; num2str(digit)]; 
+        digitLabels = [digitLabels; strcat('digit_', num2str(digit))]; 
+        
         end
     end
 end
